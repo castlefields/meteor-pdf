@@ -13,6 +13,8 @@ $ meteor add ongoworks:pdf
 
 ## Usage
 
+The `saveAsPDF` method will save/download to the browser's downloads folder (or prompt with Save As dialog, depending on browser settings).
+
 ```js
 Blaze.saveAsPDF(Template.report, {
   filename: "report.pdf", // optional, default is "document.pdf"
@@ -23,6 +25,43 @@ Blaze.saveAsPDF(Template.report, {
   unit: "in", // optional, unit for coordinates, one of "pt", "mm" (default), "cm", or "in"
   format: "letter" // optional, see Page Formats, default is "a4"
 });
+```
+
+## Other Output Types
+
+There are many other output types supported as well. All of these accept the same `options` as `saveAsPDF`.
+
+```js
+// API
+Blaze.outputAsPDF(templateOrView, type, [options], callback);
+
+// Examples
+
+// ArrayBuffer
+Blaze.outputAsPDF(Template.report, 'arraybuffer', function (arrayBuffer) {
+
+});
+
+// Blob
+Blaze.outputAsPDF(Template.report, 'blob', function (blob) {
+
+});
+
+// Object URL
+Blaze.outputAsPDF(Template.report, 'bloburi', function (objectUrl) {
+
+});
+
+// DataURI string
+Blaze.outputAsPDF(Template.report, 'datauristring', function (dataUriString) {
+
+});
+
+// Opens the document in the current window/tab
+Blaze.outputAsPDF(Template.report, 'datauri');
+
+// Opens the document in a new window/tab
+Blaze.outputAsPDF(Template.report, 'dataurlnewwindow');
 ```
 
 ## Page Formats

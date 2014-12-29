@@ -1,7 +1,4 @@
-doSave = (html, options) ->
-  unless options.filename
-    options.filename = "document.pdf"
-  
+makePDF = (html, options, callback) ->
   if options.omit
     options.elementHandlers = {} unless options.elementHandlers
     for selector in options.omit
@@ -11,12 +8,16 @@ doSave = (html, options) ->
   doc = new jsPDF options.orientation, options.unit, options.format
   
   onDone = ->
-    doc.save options.filename
+    callback doc
   
   doc.fromHTML html, options.x, options.y, options, onDone, options.margins
   return
 
-Blaze.saveAsPDF = (templateOrView, options) ->
+Blaze.outputAsPDF = (templateOrView, type, options, callback) ->
+  if typeof callback isnt 'function' and typeof options is 'function'
+    callback = options
+    options = {}
+
   options = {} unless options
   
   if options.data
@@ -24,5 +25,15 @@ Blaze.saveAsPDF = (templateOrView, options) ->
   else
     html = Blaze.toHTML templateOrView
   
-  doSave html, options
+  if type is 'save'
+    unless options.filename
+      options.filename = "document.pdf"
+
+  makePDF html, options, (doc) ->
+    result = doc.output type, options.filename
+    if callback
+      callback result
   return
+
+Blaze.saveAsPDF = (templateOrView, options, callback) ->
+  return Blaze.outputAsPDF templateOrView, 'save', options, callback
