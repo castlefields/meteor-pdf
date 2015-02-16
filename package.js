@@ -3,7 +3,7 @@
 Package.describe({
   name: "ongoworks:pdf",
   summary: "Generate PDFs on the client from Meteor templates",
-  version: "1.1.0",
+  version: "1.1.1",
   git: "https://github.com/ongoworks/meteor-pdf.git"
 });
 
